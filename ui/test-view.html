@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-controller="TestViewCtrl" ng-init="init()" ng-app="testview" ng-strict-di>
+  <head>
+    <meta charset="utf-8">
+    <title>Test View</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link id="favicon" type="image/png" rel="shortcut icon" href="img/tree_open.png">
+  </head>
+  <body>
+    <!-- Failureviewer navbar -->
+    <nav class="navbar navbar-light bg-light" role="navigation">
+      <div class="container-fluid">
+        <ul class="nav navbar-row">
+
+          <!-- Logo menu button -->
+          <li>
+            <span class="dropdown">
+              <button id="fv-logo" title="Treeherder services" role="button"
+                      data-toggle="dropdown"
+                      class="dropdown-toggle">Failure Viewer
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="fv-logo">
+                <li><a class="dropdown-item" href="/">Treeherder</a></li>
+                <li><a class="dropdown-item" href="perf.html">Perfherder</a></li>
+              </ul>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div>Show test-based component below</div>
+    <th-test-view></th-test-view>
+
+    <th-notification-box></th-notification-box>
+
+  </body>
+</html>

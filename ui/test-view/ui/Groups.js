@@ -130,3 +130,6 @@ export class Groups extends React.Component {
 }
 
 export default connect(mapStateToProps)(Groups);
+
+treeherder.directive('test-view', ['reactDirective', '$injector', (reactDirective, $injector) =>
+    reactDirective(Groups, undefined, {}, { $injector })]);
