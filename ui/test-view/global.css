@@ -62,7 +62,7 @@ main .progress {
   background-color: #1d7dbb!important;
 }
 
-.badge-default, .bg-default, .btn-default {
+.badge-secondary, .bg-secondary, .btn-secondary {
   background-color: #5d707f!important;
 }
 
@@ -97,10 +97,12 @@ main .progress {
 
 .badge-infra {
   background-color: #d78236;
+  color: white;
 }
 
 .badge-intermittent {
   background-color: #d78236;
+  color: white;
 }
 
 .toggle-count {
@@ -111,7 +113,7 @@ main .progress {
   padding-right: .25em;
 }
 
-:disabled:hover {
+[disabled]:hover {
   cursor: not-allowed;
 }
 

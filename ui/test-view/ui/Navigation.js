@@ -15,12 +15,8 @@ export default class Navigation extends React.Component {
   render() {
     return (
       <Navbar toggleable fixed="top" light style={{ borderBottom: '1px solid #ddd', backgroundColor: '#fff' }}>
-        <NavbarToggler right onClick={() => this.toggle()} />
         <NavbarBrand href="/">
           <img src={logoUrl} className="img-fluid" style={{ maxHeight: 26, verticalAlign: 'baseline' }} />
-          <Badge size="sm" color="info" style={{ marginLeft: '1rem', verticalAlign: 'top', marginTop: '.25rem' }}>
-            experimental
-          </Badge>
         </NavbarBrand>
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav navbar className="mr-auto" />
