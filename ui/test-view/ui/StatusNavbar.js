@@ -5,82 +5,91 @@ import { connect } from 'react-redux';
 import { store, actions } from '../redux/store';
 
 const mapStateToProps = ({ groups }) => {
-  const { revision, author } = groups.push;
+    const { revision, author } = groups.push;
 
-  return {
-    counts: groups.counts,
-    options: groups.options,
-    groups: groups.groups,
-    filter: groups.filter,
-    hideClassified: groups.hideClassified,
-    push: {
-      revision: revision && revision.substring(0, 12),
-      author: author,
-    },
-  };
+    return {
+        counts: groups.counts,
+        options: groups.options,
+        groups: groups.groups,
+        filter: groups.filter,
+        hideClassified: groups.hideClassified,
+        push: {
+            revision: revision && revision.substring(0, 12),
+            author: author,
+        },
+    };
 };
 
 class StatusNavbar extends React.Component {
-  toggleHideClassified(classification) {
-    const { hideClassified, filter, groups, options } = this.props;
+    toggleHideClassified(classification) {
+        const { hideClassified, filter, groups, options } = this.props;
 
-    store.dispatch(actions.groups.toggleHideClassified(
-      filter,
-      groups,
-      options,
-      {
-        ...hideClassified,
-        [classification]: !hideClassified[classification]
-      }
-    ));
-  }
+        store.dispatch(actions.groups.toggleHideClassified(
+            filter,
+            groups,
+            options,
+            {
+                ...hideClassified,
+                [classification]: !hideClassified[classification]
+            }
+        ));
+    }
 
-  render() {
-    return (
-      <Navbar toggleable>
-        <Nav className="mr-auto">
+    render() {
+        return (
+            <Navbar toggleable>
+                <Nav className="mr-auto">
           <span className="navbar-text">
-            <Icon name="code"/> Revision <code className="push-revision">{this.props.push.revision}</code>
+            <Icon name="code"/> Revision <code
+              className="push-revision">{this.props.push.revision}</code>
           </span>
 
-          <span className="navbar-text">
+                    <span className="navbar-text">
             <span className="hidden-sm-down">&mdash;&nbsp;&nbsp;&nbsp;</span>
-            <Icon name="id-card-o"/> Author <code>{this.props.push.author}</code>
+            <Icon
+                name="id-card-o"/> Author <code>{this.props.push.author}</code>
           </span>
-        </Nav>
+                </Nav>
 
-        <span className="navbar-text">
-          <Badge color="danger">{this.props.counts.failed} Other Failed Tests</Badge>
+                <span className="navbar-text">
+          <Badge color="danger">{this.props.counts.failed}
+              Other Failed Tests</Badge>
         </span>
 
-        <span className="navbar-text toggle-count" onClick={() => this.toggleHideClassified('infra')}>
+                <span className="navbar-text toggle-count"
+                      onClick={() => this.toggleHideClassified('infra')}>
           <Badge color="infra">
-            <Icon name={this.props.hideClassified.infra ? 'square-o' : 'check-square-o'}/>
-            {this.props.counts.infra} Infra Tests
+            <Icon
+                name={this.props.hideClassified.infra ? 'square-o' : 'check-square-o'}/>
+              {this.props.counts.infra} Infra Tests
           </Badge>
         </span>
 
-        <span className="navbar-text toggle-count" onClick={() => this.toggleHideClassified('intermittent')}>
+                <span className="navbar-text toggle-count"
+                      onClick={() => this.toggleHideClassified('intermittent')}>
           <Badge color="intermittent">
-            <Icon name={this.props.hideClassified.intermittent ? 'square-o' : 'check-square-o'}/>
-            {this.props.counts.intermittent} Intermittent Tests
+            <Icon
+                name={this.props.hideClassified.intermittent ? 'square-o' : 'check-square-o'}/>
+              {this.props.counts.intermittent} Intermittent Tests
           </Badge>
         </span>
 
-        <span className="navbar-text">
-          <Badge color="success">{this.props.counts.success} Successful Jobs</Badge>
+                <span className="navbar-text">
+          <Badge color="success">{this.props.counts.success}
+              Successful Jobs</Badge>
         </span>
 
-        <span className="navbar-text">
+                <span className="navbar-text">
           <Badge color="info">{this.props.counts.running} Running Jobs</Badge>
         </span>
 
-        <span className="navbar-text">
-          <Badge color="secondary">{this.props.counts.pending} Pending Jobs</Badge>
+                <span className="navbar-text">
+          <Badge color="secondary">{this.props.counts.pending}
+              Pending Jobs</Badge>
         </span>
-      </Navbar>
-    );
-  }
+            </Navbar>
+        );
+    }
 }
 
 export default connect(mapStateToProps)(StatusNavbar);
