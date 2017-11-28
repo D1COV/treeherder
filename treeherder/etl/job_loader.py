@@ -7,6 +7,7 @@ import newrelic.agent
 import slugid
 
 from treeherder.etl.common import to_timestamp
+from treeherder.etl.jobs import store_job_data
 from treeherder.etl.schema import job_json_schema
 from treeherder.model.models import (Push,
                                      Repository)
@@ -44,23 +45,26 @@ class JobLoader:
     }
 
     def process_job_list(self, job):
-
         validated_jobs = self._get_validated_jobs_by_project(job)
 
-        for project, job_list in validated_jobs.items():
-            newrelic.agent.add_custom_parameter("project", project)
-            try:
-                repository = Repository.objects.get(name=project)
+        try:
+            repository = repository.objects.get(name="project")
+            storeable_job_list = []
 
+            if job["state"] != "unscheduled":
                 try:
                     self.clean_revision(repository, job)
-
+                    storeable_job_list.append(
+                                    self.transform(job)
+                    )
                 except AttributeError:
                     logger.warn("Skipping job due to bad attribute",
                                 exc_info=1)
 
-            except Repository.DoesNotExist:
-                logger.info("Job with unsupported project: {}".format(project))
+                store_job_data(repository, storeable_job_list)
+
+        except Repository.DoesNotExist:
+            logger.info("Job with unsupported project: {}".format(job))
 
     def clean_revision(self, repository, pulse_job):
         # It is possible there will be either a revision or a revision_hash
