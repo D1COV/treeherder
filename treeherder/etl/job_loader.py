@@ -1,6 +1,5 @@
 import logging
 import uuid
-from collections import defaultdict
 
 import jsonschema
 import newrelic.agent
@@ -45,10 +44,15 @@ class JobLoader:
     }
 
     def process_job_list(self, job):
-        validated_jobs = self._get_validated_jobs_by_project(job)
+        try:
+            jsonschema.validate(job, job_json_schema)
+        except (jsonschema.ValidationError, jsonschema.SchemaError) as e:
+            logger.error(
+                "JSON Schema validation error during job ingestion: {}".format(e))
 
         try:
             repository = repository.objects.get(name="project")
+
             storeable_job_list = []
 
             if job["state"] != "unscheduled":
@@ -317,17 +321,6 @@ class JobLoader:
     def _get_step_result(self, job, result):
         resmap = self.TEST_RESULT_MAP if job["jobKind"] == "test" else self.BUILD_RESULT_MAP
         return resmap[result]
-
-    def _get_validated_jobs_by_project(self, job):
-        validated_job = defaultdict(list)
-        try:
-            jsonschema.validate(job, job_json_schema)
-            validated_job[job["origin"]["project"]].append(job)
-        except (jsonschema.ValidationError, jsonschema.SchemaError) as e:
-            logger.error(
-                "JSON Schema validation error during job ingestion: {}".format(e))
-
-        return validated_job
 
 
 class MissingPushException(Exception):
