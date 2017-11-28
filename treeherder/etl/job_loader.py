@@ -51,7 +51,7 @@ class JobLoader:
                 "JSON Schema validation error during job ingestion: {}".format(e))
 
         try:
-            repository = repository.objects.get(name="project")
+            repository = Repository.objects.get(name="project")
 
             storeable_job_list = []
 
